@@ -82,6 +82,8 @@ function App() {
           newUserInfo.success = true;
           setUser(newUserInfo);
           console.log(res)
+          updateUserName(user.name)
+          
         })
         .catch((error) => {
           const newUserInfo = { ...user };
@@ -101,6 +103,7 @@ if(!newUser && user.email && user.password){
           newUserInfo.success = true;
           setUser(newUserInfo);
           console.log(res)
+          console.log('sing in user info',res.user);
   })
   .catch((error) => {
     const newUserInfo = { ...user };
@@ -112,6 +115,19 @@ if(!newUser && user.email && user.password){
 
     e.preventDefault();
   }
+const updateUserName= name =>{
+  var user = firebase.auth().currentUser;
+
+  user.updateProfile({
+    displayName: name,
+  }).then(function() {
+    console.log('user name update Successfully');
+  }).catch(function(error) {
+    console.log(error);
+  });
+}
+
+
   return (
     <div className="App">
       <h1>Who Are You</h1>
@@ -142,7 +158,7 @@ if(!newUser && user.email && user.password){
       </form>
       <p style={{ color: 'red' }}>{user.error}</p>
       {user.success && <p style={{ color: 'green' }}>User {newUser?'Created':'Logged In'} Successfully</p>}
-      <button onClick={handleClick}>submit</button>
+<button onClick={handleClick}>{newUser?'Sing up':'Sing in'}</button>
     </div>
   );
 }
