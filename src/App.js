@@ -19,8 +19,29 @@ function App() {
     password: '',
     photo: ''
   })
-
+  var fbProvider = new firebase.auth.FacebookAuthProvider();
   const provider = new firebase.auth.GoogleAuthProvider();
+
+const fbHandle=()=>{
+  firebase
+  .auth()
+  .signInWithPopup(fbProvider)
+  .then((result) => {
+    var credential = result.credential;
+     var user = result.user;
+
+    var accessToken = credential.accessToken;
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    var email = error.email;
+    var credential = error.credential;
+
+  });
+}
+
+
 
   const handleSignIn = () => {
 
@@ -135,6 +156,8 @@ const updateUserName= name =>{
         user.isSignedIn ? <button onClick={handleSignOut}>sign out</button> :
           <button onClick={handleSignIn}>sign in</button>
       }
+      <br/>
+      <button onClick={fbHandle}>Sing in Using Facebook</button>
       {
         user.isSignedIn && <div>
           <p>welcome: {user.name}</p>
@@ -145,6 +168,8 @@ const updateUserName= name =>{
 
       <h1>Our Own Authentication</h1>
       <input type="checkbox" onChange={()=>SetNewUser(!newUser)} name="newUser" id="" />
+       
+
       <label htmlFor="newUser">new sign Up</label>
 
       <form onSubmit={handleSubmit}>
